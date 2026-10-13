@@ -11,7 +11,19 @@ public class Project implements Serializable {
         this.name = name;
         this.tasks = new ArrayList<>();
     }
-    public void addTask(Task newTask) {
-        tasks.add(newTask);
+
+    public Project(Project original, boolean isSahllow) {
+        this.name = original.name + "(Поверхнева копія)";
+        this.tasks = original.tasks;
+    }
+
+    public Project(Project original) {
+        this.name = original.name + "(Глибока копія)";
+        this.tasks = new ArrayList<>(original.tasks);
+
+    }
+    public void addTask(Task task) {
+
+        this.tasks.add(task);
     }
 }
