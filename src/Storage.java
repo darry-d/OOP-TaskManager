@@ -2,38 +2,23 @@ import java.io.*;
 
 public class Storage {
 
-public void saveProject(Project project, String filename) {
-    try {
-        FileOutputStream fileOut = new FileOutputStream(filename);
-        ObjectOutputStream out = new ObjectOutputStream(fileOut);
-
-        out.writeObject(project);
-
-        out.close();
-        fileOut.close();
-        System.out.println("Дані успішно збережено у файл: " + filename);
-
-    } catch (Exception e) {
-        System.out.println("Помилка при збереженні: " + e.getMessage());
-
+    public void saveProject(Project project, String filename) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
+            out.writeObject(project);
+            System.out.println("Дані успішно збережено у бінарний файл: " + filename);
+        } catch (IOException e) {
+            System.out.println("Помилка при збереженні: " + e.getMessage());
+        }
     }
-}
 
-public Project loadProject(String filename) {
-    try {
-        FileInputStream fileIn = new FileInputStream(filename);
-        ObjectInputStream in = new ObjectInputStream(fileIn);
-
-        Project project = (Project) in.readObject();
-
-        in.close();
-        fileIn.close();
-        System.out.println("Дані успішно завантажено з файлу: " + filename);
-        return project;
-
-    } catch (Exception e) {
-        System.out.println("Попередніх збережень не знайдено. Буде створено новий чистий проєкт.");
-        return null;
+    public Project loadProject(String filename) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+            Project project = (Project) in.readObject();
+            System.out.println("Дані успішно завантажено з бінарного файлу: " + filename);
+            return project;
+        } catch (Exception e) {
+            System.out.println("Попередніх збережень не знайдено. Буде створено новий чистий проєкт.");
+            return null;
+        }
     }
-}
 }
